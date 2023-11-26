@@ -3,14 +3,14 @@
 
 int Init_Cuazar(void)
 {
-  testModeIsOn = TRUE;
+  int testModeIsOn = TRUE;
   printf(GREEN "Cuazar initialized...\n" RESET);
   return 0;
 }
 
 int Kill_Cuazar(void)
 {
-  testModeIsOn = FALSE;
+  int testModeIsOn = FALSE;
   printf(YELLOW "Killing Cuazar..." RESET);
   return 0;
 }

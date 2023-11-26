@@ -18,23 +18,24 @@ git clone https://github.com/SchoolyB/Cuazar.git
 ```
 
 # Step 3:
-Include the Cuazar header file in your main file
+Include the Cuazar source and header files in your main file
 Be sure to use the correct file path.
 ```c
 #include "Other/files.h"
+#include "Cuazar/lib/Cuazar.c"
 #include "Cuazar/lib/Cuazar.h"
 ```
 
 # Step 4:
 To enable the library
-Set the `testModeIsOn` variable to TRUE or 1
+Call `Init_Cuazar()` function;
 ```c
 #include "Other/files.h"
+#include "Cuazar/lib/Cuazar.c"
 #include "Cuazar/lib/Cuazar.h"
 
-testModeIsOn = TRUE //or 1
-
 int main(int argc, char** argv) {
+    Init_Cuazar();
     // Your code here
     return 0;
 }
@@ -43,13 +44,17 @@ int main(int argc, char** argv) {
 # Step 5:
 Call the Cuazar functions where needed
 ```C
-#include "lib/Cuazar.h"
-#include <stdio.h>
 
-testModeIsOn = TRUE; // or 1
+#include <stdio.h>
+#include "Other/files.h"
+#include "Cuazar/lib/Cuazar.c"
+#include "Cuazar/lib/Cuazar.h"
+
+
 
 int main(int argc, char **argv)
 {
+    Init_Cuazar();
   /*
   __CUAZAR_RETURN__ tests the return value of a function
   Params:
