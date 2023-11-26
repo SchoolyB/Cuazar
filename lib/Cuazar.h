@@ -32,7 +32,7 @@
 #define TRUE 1
 #define FALSE 0
 
-int testModeIsOn;
+extern int testModeIsOn;
 
 int Init_Cuazar(void);
 int Kill_Cuazar(void);
