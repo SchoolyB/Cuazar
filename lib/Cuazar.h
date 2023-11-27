@@ -6,8 +6,9 @@
  *
  * Currently, the library supports the following:
  * - Basic Logic & Arithmetic
- * - Strings
- * - Return Values
+ * - String Comparisons
+ * - Functions return values
+ * - Function Execution Time
  *
  *
  ***************************************************************/
@@ -17,6 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdio.h>
+#include <time.h>
 
 #define RED "\x1b[31m"
 #define GREEN "\x1b[32m"
@@ -40,12 +42,15 @@ int Kill_Cuazar(void);
 /************************************************************************************
  * Module(s): Basic Logic & Arithmetic
  * Macro: __CUAZAR_EQUALS__
- * Description: Used to compare the expected result with the actual
- * Example:
+ * Description: Used to compare the expected result with the actual result
+ * -----------------------------------------------------------------------------------
+ * Example Usage:
  * int a = 1;
  * int b = 2;
- * __CUAZAR_EQUALS__(1, 4, a + b, return 1); //This would fail
+ * __CUAZAR_EQUALS__(1, 4, a + b, return 1);
  *
+ * Example Output: "TEST #1 FAILED. Expected 4 but got 3 as the result."
+ * -----------------------------------------------------------------------------------
  * Author: Marshall Burns
  * Date: 11/24/2023
  ************************************************************************************/
@@ -72,9 +77,13 @@ int Kill_Cuazar(void);
  * Module(s): Basic Logic & Arithmetic / Strings
  * Macro: __CUAZAR_EQUALS_STR__
  * Description: Used to compare the expected string result with the actual string result
- * Example:
- * __CUAZAR_EQUALS_STR__(TRUE, 1, "Hello", "HELLO"); //This would fail
+ * -----------------------------------------------------------------------------------
+ * Example Usage:
+ * char input[10] = "Jello";
+ * __CUAZAR_EQUALS_STR__(TRUE, 1, "Hello", input);
  *
+ * Example Output: "TEST #1 FAILED. Expected "Hello" but got "Jello" as the result."
+ * -----------------------------------------------------------------------------------
  * Author: Marshall Burns
  * Date: 11/24/2023
  ************************************************************************************/
@@ -105,9 +114,12 @@ int Kill_Cuazar(void);
  * ! 1.The macro CAN NOT be used inside the function that is being tested.
  * ! 2.The function that is being tested MUST be called inside the macro.
  * ! 3.The function that is being tested MUST return a value.
- * Example:
+ * -----------------------------------------------------------------------------------
+ * Example Usage:
  * __CUAZAR_RETURN__(TRUE, 1, 0, new_func()); //This would fail
  *
+ * Example Output: "TEST #1 FAILED. Expected a return value of 1 but received a return value of 0."
+ * -----------------------------------------------------------------------------------
  * Author: Marshall Burns
  * Date: 11/24/2023
  * **********************************************************************************/
@@ -134,8 +146,12 @@ int Kill_Cuazar(void);
  * Module: Basic Logic & Arithmetic
  * Macro: __CUAZAR_BOOL__
  * Description: Used to compare the expected boolean result with the actual boolean result
- * Example:
- * __CUAZAR_BOOL__(TRUE, 1, 1, 1); //This would pass
+ * -----------------------------------------------------------------------------------
+ * Example Usage:
+ * __CUAZAR_BOOL__(TRUE, 1, 1, 1);
+ *
+ * Potential Output: "TEST #1 PASSED."
+ * -----------------------------------------------------------------------------------
  * Author: Marshall Burns
  * Date: 11/24/2023
  ************************************************************************************/
@@ -159,4 +175,40 @@ int Kill_Cuazar(void);
       } while (0);                                                                                                                                             \
     }                                                                                                                                                          \
   } while (0)
+
+/************************************************************************************
+ * Module: Execution Time
+ * Macro: __CUAZAR_EXEC_TIME__
+ * Description: Used to test how long it takes for a function to fully execute.
+ * !NOTE:  Before using this macro there are a couple things to note:
+ * ! 1. The macro CAN NOT be used inside the function that is being tested.
+ * ! 2. This macro only works on functions that do not take in any kind of user input
+ * ! 3. The function that is being tested MUST be called inside the macro
+ * ! 4. Uses the C standard library <time.h>
+ *------------------------------------------------------------------------------------
+ * Example Usage:
+ * __CUAZAR_EXEC_TIME__(1, myCoolFunc());
+ *
+ * Example Output: "TEST #1 PASSED. Execution time: 0.000020 seconds."
+ *------------------------------------------------------------------------------------
+ * Author: Marshall Burns
+ * Date: 11/25/2023
+ ************************************************************************************/
+
+#define __CUAZAR_EXEC_TIME__(testNum, func)                                                                                                      \
+  do                                                                                                                                             \
+  {                                                                                                                                              \
+    if ((testModeIsOn == TRUE))                                                                                                                  \
+    {                                                                                                                                            \
+      do                                                                                                                                         \
+      {                                                                                                                                          \
+        clock_t start = clock();                                                                                                                 \
+        func;                                                                                                                                    \
+        clock_t end = clock();                                                                                                                   \
+        double time_spent = (double)(end - start) / CLOCKS_PER_SEC;                                                                              \
+        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED. Execution time: " BOLD "%f" RESET GREEN " seconds.\n" RESET, testNum, time_spent); \
+      } while (0);                                                                                                                               \
+    }                                                                                                                                            \
+  } while (0)
+
 #endif
