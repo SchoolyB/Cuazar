@@ -1,36 +1,44 @@
 # Cuazar
 ## Description
-Cuazar is a basic testing library for C code. It is designed to be simple and easy to use and integrate into existing projects.
+Cuazar is a basic testing library for C code. It is designed to be simple, easy to use, and easy to integrate into existing projects.
 ## Including Cuazar
-To include Cuazar in your project simply clone the repository into your project directory.
-Ideally youd want to clone it into a subdirectory of your project, but you can clone it anywhere you want.
-
-# Step 1:
+To include Cuazar in your project simply follow the steps below.
+ 
+## Step 1:
 Navigate to your project directory
 ```bash
-cd my/project/root/subdir
+cd your/projects/subdir
 ```
 
-# Step 2:
-Clone the repository
+## Step 2:
+Add the Cuazar repository as a submodule
+#### NOTE:
+ Ideally you'd want to add the submodule to a directory called `lib` or `libs` but you can add it anywhere you'd like.
 ```bash
-git clone https://github.com/SchoolyB/Cuazar.git
+git submodule add https://github.com/SchoolyB/Cuazar.git
 ```
 
-# Step 3:
-Include the Cuazar source and header files in your main file
-Be sure to use the correct file path.
+## Step 3:
+Include the Cuazar header file and source file where ever your main function is located.
+
+
 ```c
-#include "Other/files.h"
+main.c
 #include "Cuazar/lib/Cuazar.c"
 #include "Cuazar/lib/Cuazar.h"
 ```
 
-# Step 4:
+### NOTE:
+After including the files mentioned in step 3, you WILL NOT need to include the source file again. You will only need to include the header file `Cuazar.h` in source files where you want to use Cuazar functions. 
+```C
+otherFile.c
+#include "Cuazar/lib/Cuazar.h"
+``` 
+
+## Step 4:
 To enable the library
-Call `Init_Cuazar()` function;
+Call `Init_Cuazar()` function in your main function. This will initialize the library and allow you to use the Cuazar functions.
 ```c
-#include "Other/files.h"
 #include "Cuazar/lib/Cuazar.c"
 #include "Cuazar/lib/Cuazar.h"
 
@@ -41,12 +49,11 @@ int main(int argc, char** argv) {
 }
 ```
 
-# Step 5:
+## Step 5:
 Call the Cuazar functions where needed
 ```C
 
 #include <stdio.h>
-#include "Other/files.h"
 #include "Cuazar/lib/Cuazar.c"
 #include "Cuazar/lib/Cuazar.h"
 
@@ -72,12 +79,10 @@ int myCoolFunc(void)
 
   if (schoolIsCool == TRUE)
   {
-    puts("You think school is cool?");
     return 1;
   }
   else
   {
-    puts("School is not cool.");
     return 3;
   }
 }

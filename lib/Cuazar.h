@@ -20,18 +20,54 @@
 #include <stdio.h>
 #include <time.h>
 
+#ifdef RED
+#undef RED
+#endif
 #define RED "\x1b[31m"
+
+#ifdef GREEN
+#undef GREEN
+#endif
 #define GREEN "\x1b[32m"
+
+#ifdef YELLOW
+#undef YELLOW
+#endif
 #define YELLOW "\x1b[33m"
+
+#ifdef BLUE
+#undef BLUE
+#endif
 #define BLUE "\x1b[34m"
+
+#ifdef RESET
+#undef RESET
+#endif
 #define RESET "\x1b[0m"
 
-// Font macros
+#ifdef BOLD
+#undef BOLD
+#endif
 #define BOLD "\x1b[1m"
+
+#ifdef UNDERLINE
+#undef UNDERLINE
+#endif
 #define UNDERLINE "\x1b[4m"
+
+#ifdef RESET
+#undef RESET
+#endif
 #define RESET "\x1b[0m"
 
+#ifdef TRUE
+#undef TRUE
+#endif
 #define TRUE 1
+
+#ifdef FALSE
+#undef FALSE
+#endif
 #define FALSE 0
 
 extern int testModeIsOn;
