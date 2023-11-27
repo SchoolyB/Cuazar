@@ -7,10 +7,3 @@ int Init_Cuazar(void)
   printf(GREEN "Cuazar initialized...\n" RESET);
   return 0;
 }
-
-int Kill_Cuazar(void)
-{
-  testModeIsOn = FALSE;
-  printf(YELLOW "Killing Cuazar..." RESET);
-  return 0;
-}
