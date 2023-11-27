@@ -23,7 +23,7 @@ Include the Cuazar header file and source file where ever your main function is 
 
 
 ```c
-main.c
+// main.c
 #include "Cuazar/lib/Cuazar.c"
 #include "Cuazar/lib/Cuazar.h"
 ```
@@ -31,7 +31,7 @@ main.c
 ### NOTE:
 After including the files mentioned in step 3, you WILL NOT need to include the source file again. You will only need to include the header file `Cuazar.h` in source files where you want to use Cuazar functions. 
 ```C
-otherFile.c
+// otherFile.c
 #include "Cuazar/lib/Cuazar.h"
 ``` 
 
@@ -39,6 +39,7 @@ otherFile.c
 To enable the library
 Call `Init_Cuazar()` function in your main function. This will initialize the library and allow you to use the Cuazar functions.
 ```c
+// main.c
 #include "Cuazar/lib/Cuazar.c"
 #include "Cuazar/lib/Cuazar.h"
 
@@ -52,7 +53,7 @@ int main(int argc, char** argv) {
 ## Step 5:
 Call the Cuazar functions where needed
 ```C
-
+// main.c
 #include <stdio.h>
 #include "Cuazar/lib/Cuazar.c"
 #include "Cuazar/lib/Cuazar.h"
