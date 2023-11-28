@@ -41,8 +41,8 @@ Include the Cuazar header file in all files where you plan on using the Cuazar l
 
 ## Step 4:
 To enable the library
-Call `Init_Cuazar()` function in your main function. This will initialize the library and allow you to use the Cuazar functions.
-Note: You need to pass in `TRUE` or `FALSE` when calling `Init_Cuazar()` function. An argument of `TRUE` will clear the terminal while an argument of `FALSE` will not.
+Call the `Init_Cuazar()` function in your main function. This will initialize the library and allow you to use the Cuazar functions.
+#### Note: You will need to pass in `TRUE` or `FALSE` when calling `Init_Cuazar()` function. An argument of `TRUE` will clear the terminal while an argument of `FALSE` will not.
 ```c
 // main.c
 #include "Cuazar/lib/Cuazar.h"
@@ -63,7 +63,7 @@ Call the Cuazar functions where needed
 
 int main(int argc, char **argv)
 {
-    Init_Cuazar();
+    Init_Cuazar(TRUE);
   /*
   __CUAZAR_RETURN__ Tests the return value of a function
   Params:
