@@ -1,6 +1,14 @@
 # Cuazar
 ## Description
 Cuazar is a basic testing library for C code. It is designed to be simple, easy to use, and easy to integrate into existing projects.
+### Current Features:
+ - Arithmetic Testing With `__CUAZAR_EQUALS_INT__`
+ - String comparison Testing with `__CUAZAR_EQUALS_STR__`
+ - Pointer Comparison Testing With `__CUAZAR_EQUALS_PTR__`
+ - Boolean Testing With `__CUAZAR_BOOL__`
+ - Return value Testing With `__CUAZAR_RETURN__`
+ - Function Execution Timing With `__CUAZAR_EXEC_TIME__`
+  
 ## Including Cuazar
 To include Cuazar in your project simply follow the steps below.
  
@@ -19,17 +27,13 @@ git submodule add https://github.com/SchoolyB/Cuazar.git
 ```
 
 ## Step 3:
-Include the Cuazar header file and source file where ever your main function is located.
+Include the Cuazar header file in all files where you plan on using the Cuazar library.
 
 
 ```c
 // main.c
-#include "Cuazar/lib/Cuazar.c"
 #include "Cuazar/lib/Cuazar.h"
 ```
-
-### NOTE:
-After including the files mentioned in step 3, you WILL NOT need to include the source file again. You will only need to include the header file `Cuazar.h` in source files where you want to use Cuazar functions. 
 ```C
 // otherFile.c
 #include "Cuazar/lib/Cuazar.h"
@@ -37,14 +41,14 @@ After including the files mentioned in step 3, you WILL NOT need to include the 
 
 ## Step 4:
 To enable the library
-Call `Init_Cuazar()` function in your main function. This will initialize the library and allow you to use the Cuazar functions.
+Call the `Init_Cuazar()` function in your main function. This will initialize the library and allow you to use the Cuazar functions.
+#### Note: You will need to pass in `TRUE` or `FALSE` when calling `Init_Cuazar()` function. An argument of `TRUE` will clear the terminal while an argument of `FALSE` will not.
 ```c
 // main.c
-#include "Cuazar/lib/Cuazar.c"
 #include "Cuazar/lib/Cuazar.h"
 
 int main(int argc, char** argv) {
-    Init_Cuazar();
+    Init_Cuazar(TRUE); //Initialize Cuazar and clear the terminal
     // Your code here
     return 0;
 }
@@ -55,22 +59,19 @@ Call the Cuazar functions where needed
 ```C
 // main.c
 #include <stdio.h>
-#include "Cuazar/lib/Cuazar.c"
 #include "Cuazar/lib/Cuazar.h"
-
-
 
 int main(int argc, char **argv)
 {
-    Init_Cuazar();
+    Init_Cuazar(TRUE);
   /*
-  __CUAZAR_RETURN__ tests the return value of a function
+  __CUAZAR_RETURN__ Tests the return value of a function
   Params:
-  1 = The test number. This could be 2,3,47,50,150,etc...
+  bumpT() = Return value of Cuazar's auto incrementing function
   3 = The Expected return value from the function
   myCoolFunc() = The function whose return value we are testing
   */
-  __CUAZAR_RETURN__(1, 3, myCoolFunc());
+  __CUAZAR_RETURN__(bumpT(), 3, myCoolFunc());
   return 0;
 }
 
