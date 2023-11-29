@@ -71,12 +71,12 @@
 #endif
 #define FALSE 0
 
-int testModeIsOn = FALSE;
-int testNum = 1;
+static int testModeIsOn = FALSE;
+static int testNum = 1;
 
 // Declarations
-int Init_Cuazar(int clear);
-int bumpT(void);
+static int Init_Cuazar(int clear);
+static int bumpT(void);
 
 /************************************************************************************
  * Module(s): Core
