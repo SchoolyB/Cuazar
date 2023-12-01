@@ -77,6 +77,7 @@ static int testNum = 1;
 // Declarations
 static int Init_Cuazar(int clear);
 static int bumpT(void);
+static int clear(void);
 
 /************************************************************************************
  * Module(s): Core
@@ -94,22 +95,35 @@ static int bumpT(void);
  *  Your code and test here
  * }
  ************************************************************************************/
-int Init_Cuazar(int clearTerm) // definition
+int Init_Cuazar(int func) // definition
 {
-  if (clearTerm == TRUE)
-  {
-    system("clear");
-  }
   testModeIsOn = TRUE;
   printf(GREEN "Cuazar initialized...\n" RESET);
   return 0;
 }
 
 /************************************************************************************
+ * Module(s): Core
+ * Function: clear
+ * Description: Clears the terminal
+ * !Note: This function is called inside Init_Cuazar()
+ * -----------------------------------------------------------------------------------
+ * Example Usage:
+ * Init_Cuazar(clear()); // initialize Cuazar and clear the terminal
+ * -----------------------------------------------------------------------------------
+ * Author: Marshall Burns
+ * Date: 11/24/2023
+ * **********************************************************************************/
+int clear(void)
+{
+  system("clear");
+}
+
+/************************************************************************************
  * Module(s): Helper
  * Function: bumpT // short for 'bump test'
  * Description: Called inside Cuazar macros to increment the test number automatically
- * !Note: Using bumpT() is optional. See example usage below
+ * !Note: Using bumpT() is OPTIONAL. See example usage below
  * Note: Big thanks to @CobbCoding for this idea
  * -----------------------------------------------------------------------------------
  * Example Usage(Using bumpT() -OR- int values):
