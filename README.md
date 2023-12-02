@@ -1,6 +1,16 @@
 # Cuazar
 ## Description
 Cuazar is a basic testing library for C code. It is designed to be simple, easy to use, and easy to integrate into existing projects.
+
+## Table of Contents
+- [Cuazar](#cuazar)
+- [Description](#description)
+- [Table of Contents](#table-of-contents)
+- [Current Features:](#current-features)
+- [Including Cuazar](#including-cuazar)
+- [CMake & Cuazar](#cmake-&-cuazar)
+  
+
 ### Current Features:
  - Arithmetic Testing With `__CUAZAR_EQUALS_INT__`
  - String comparison Testing with `__CUAZAR_EQUALS_STR__`
@@ -11,7 +21,7 @@ Cuazar is a basic testing library for C code. It is designed to be simple, easy 
   
 ## Including Cuazar
 To include Cuazar in your project simply follow the steps below.
- 
+#### NOTE: If using CMake, see [CMake & Cuazar](#cmake-&-cuazar) for extra instructions on how to include Cuazar in your project.
 ## Step 1:
 Navigate to your project directory
 ```bash
@@ -89,7 +99,33 @@ int myCoolFunc(void)
   }
 }
 ```
+
+#### Note
+Be sure to link the Cuazar.c file when compiling
+```bash
+# Using GCC
+
+  gcc main.c  path/to/the/lib/Cuazar.c 
+``` 
+
 # Output:
 `TEST #1 PASSED`
+<hr>
+
+## CMake & Cuazar
+To include Cuazar in your CMake project all the steps are the same except but there are just one extra step.
+
+## Step 6: (If using CMake)
+Simply add the Cuazar directory in your CMakeLists.txt file
+```cmake
+# CMakeLists.txt
+set(SOURCES_C
+    main.c
+    otherFile.c
+    path/to/the/lib/Cuazar.c
+)
+```
+
+
 
 
