@@ -3,3 +3,6 @@
 *.exe
 main.c
 /src
+/build
+CMakeLists.txt
+```
