@@ -122,7 +122,7 @@ int clear(void)
 /************************************************************************************
  * Module(s): Helper
  * Function: bumpT // short for 'bump test'
- * Description: Called inside Cuazar macros to increment the test number automatically
+ * Description: Called inside Cuazar functions to increment the test number automatically
  * !Note: Using bumpT() is OPTIONAL. See example usage below
  * Note: Big thanks to @CobbCoding for this idea
  * -----------------------------------------------------------------------------------
@@ -138,7 +138,7 @@ int bumpT(void)
 
 /************************************************************************************
  * Module(s): Basic Logic & Arithmetic / Integers
- * Macro: __CUAZAR_EQUALS__
+ * Function: __CUAZAR_EQUALS__
  * Description: Used to compare the expected result with the actual result
  * -----------------------------------------------------------------------------------
  * Example Usage:
@@ -151,28 +151,27 @@ int bumpT(void)
  * Author: Marshall Burns
  * Date: 11/24/2023
  ************************************************************************************/
-#define __CUAZAR_EQUALS_INT__(testNum, expected, result)                                                                                                                                  \
-  do                                                                                                                                                                                      \
-  {                                                                                                                                                                                       \
-    if ((testModeIsOn == TRUE))                                                                                                                                                           \
-    {                                                                                                                                                                                     \
-      do                                                                                                                                                                                  \
-      {                                                                                                                                                                                   \
-        if ((expected) != (result))                                                                                                                                                       \
-        {                                                                                                                                                                                 \
-          printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected " BOLD "%d" RESET RED " but received " BOLD "%d" RESET RED " as the result.\n" RESET, testNum, expected, result);    \
-        }                                                                                                                                                                                 \
-        else                                                                                                                                                                              \
-        {                                                                                                                                                                                 \
-          printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%d" RESET GREEN " and got " BOLD "%d" RESET GREEN " as the result.\n" RESET, testNum, expected, result); \
-        }                                                                                                                                                                                 \
-      } while (0);                                                                                                                                                                        \
-    }                                                                                                                                                                                     \
-  } while (0)
+void __CUAZAR_EQUALS_INT__(int testNum, int expected, int result)
+{
+  if (testModeIsOn == TRUE)
+  {
+    do
+    {
+      if (expected != result)
+      {
+        printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected " BOLD "%d" RESET RED " but received " BOLD "%d" RESET RED " as the result.\n" RESET, testNum, expected, result);
+      }
+      else
+      {
+        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%d" RESET GREEN " and got " BOLD "%d" RESET GREEN " as the result.\n" RESET, testNum, expected, result);
+      }
+    } while (0);
+  }
+}
 
 /************************************************************************************
  * Module(s): Basic Logic & Arithmetic / Strings
- * Macro: __CUAZAR_EQUALS_STR__
+ * Function: __CUAZAR_EQUALS_STR__
  * Description: Used to compare the expected string result with the actual string result
  * -----------------------------------------------------------------------------------
  * Example Usage:
@@ -184,28 +183,26 @@ int bumpT(void)
  * Author: Marshall Burns
  * Date: 11/24/2023
  ************************************************************************************/
-#define __CUAZAR_EQUALS_STR__(testNum, expectedStr, resultStr)                                                                                                                                  \
-  do                                                                                                                                                                                            \
-  {                                                                                                                                                                                             \
-    if ((testModeIsOn == TRUE))                                                                                                                                                                 \
-    {                                                                                                                                                                                           \
-      do                                                                                                                                                                                        \
-      {                                                                                                                                                                                         \
-        if (strcmp((expectedStr), (resultStr)) != 0)                                                                                                                                            \
-        {                                                                                                                                                                                       \
-          printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected " BOLD "%s" RESET RED " but received " BOLD "%s" RESET RED " as the result.\n" RESET, testNum, expectedStr, resultStr);    \
-        }                                                                                                                                                                                       \
-        else                                                                                                                                                                                    \
-        {                                                                                                                                                                                       \
-          printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%s" RESET GREEN " and got " BOLD "%s" RESET GREEN " as the result.\n" RESET, testNum, expectedStr, resultStr); \
-        }                                                                                                                                                                                       \
-      } while (0);                                                                                                                                                                              \
-    }                                                                                                                                                                                           \
-  } while (0)
-
+void __CUAZAR_EQUALS_STR__(int testNum, char *expected, char *result)
+{
+  if (testModeIsOn == TRUE)
+  {
+    do
+    {
+      if (strcmp(expected, result) != 0)
+      {
+        printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected " BOLD "%s" RESET RED " but received " BOLD "%s" RESET RED " as the result.\n" RESET, testNum, expected, result);
+      }
+      else
+      {
+        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%s" RESET GREEN " and got " BOLD "%s" RESET GREEN " as the result.\n" RESET, testNum, expected, result);
+      }
+    } while (0);
+  }
+}
 /************************************************************************************
  * Module(s): Basic Logic & Arithmetic / Pointers
- * Macro: __CUAZAR_EQUALS_PTR__
+ * Function: __CUAZAR_EQUALS_PTR__
  * Description: Used to compare the expected pointer result with the actual pointer result
  * Note: Big thanks to @CobbCoding for the feedback on this one
  * -----------------------------------------------------------------------------------
@@ -220,32 +217,30 @@ int bumpT(void)
  * Date: 11/28/2023
  ************************************************************************************/
 
-#define __CUAZAR_EQUALS_PTR__(testNum, expectedPtr, resultPtr)                                                                                                                                                   \
-  do                                                                                                                                                                                                             \
-  {                                                                                                                                                                                                              \
-    if ((testModeIsOn == TRUE))                                                                                                                                                                                  \
-    {                                                                                                                                                                                                            \
-      do                                                                                                                                                                                                         \
-      {                                                                                                                                                                                                          \
-        if ((expectedPtr) != (resultPtr))                                                                                                                                                                        \
-        {                                                                                                                                                                                                        \
-          printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected to point to address " BOLD "%p" RESET RED " but instead is pointing to " BOLD "%p" RESET RED ".\n" RESET, testNum, expectedPtr, resultPtr); \
-        }                                                                                                                                                                                                        \
-        else                                                                                                                                                                                                     \
-        {                                                                                                                                                                                                        \
-          printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected to point to address " BOLD "%p" RESET GREEN " and got " BOLD "%p" RESET ".\n", testNum, expectedPtr, resultPtr);                        \
-        }                                                                                                                                                                                                        \
-      } while (0);                                                                                                                                                                                               \
-    }                                                                                                                                                                                                            \
-  } while (0)
-
+void __CUAZAR_EQUALS_PTR__(int testNum, int *expected, int *result)
+{
+  if (testModeIsOn == TRUE)
+  {
+    do
+    {
+      if (expected != result)
+      {
+        printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected to point to " BOLD "%p" RESET RED " but instead is pointing to " BOLD "%p" RESET RED ".\n" RESET, testNum, expected, result);
+      }
+      else
+      {
+        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected to point to " BOLD "%p" RESET GREEN " and got " BOLD "%p" RESET GREEN " as the result.\n" RESET, testNum, expected, result);
+      }
+    } while (0);
+  }
+}
 /************************************************************************************
  * Module(s): Return Values
- * Macro: __CUAZAR_RETURN__
+ * Function: __CUAZAR_RETURN__
  * Description: Used to compare the expected return value with the actual return value
- * !NOTE:  Before using this macro there are a few things to know:
- * ! 1.The macro CAN NOT be used inside the function that is being tested.
- * ! 2.The function that is being tested MUST be called inside the macro.
+ * !NOTE:  Before using this function there are a few things to know:
+ * ! 1.The function CAN NOT be used inside the function that is being tested.
+ * ! 2.The function that is being tested MUST be called inside the function.
  * ! 3.The function that is being tested MUST return a value.
  * -----------------------------------------------------------------------------------
  * Example Usage:
@@ -256,28 +251,27 @@ int bumpT(void)
  * Author: Marshall Burns
  * Date: 11/24/2023
  * **********************************************************************************/
-#define __CUAZAR_RETURN__(testNum, expected, func)                                                                                                                                                               \
-  do                                                                                                                                                                                                             \
-  {                                                                                                                                                                                                              \
-    if ((testModeIsOn == TRUE))                                                                                                                                                                                  \
-    {                                                                                                                                                                                                            \
-      do                                                                                                                                                                                                         \
-      {                                                                                                                                                                                                          \
-        if ((expected) != (func))                                                                                                                                                                                \
-        {                                                                                                                                                                                                        \
-          printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected a return value of " BOLD "%d" RESET RED " but received a return value of " BOLD "%d" RESET RED RESET ".\n" RESET, testNum, expected, func); \
-        }                                                                                                                                                                                                        \
-        else                                                                                                                                                                                                     \
-        {                                                                                                                                                                                                        \
-          printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%d" RESET GREEN " and got a return value of " BOLD "%d" RESET ".\n" RESET, testNum, expected, func);                            \
-        }                                                                                                                                                                                                        \
-      } while (0);                                                                                                                                                                                               \
-    }                                                                                                                                                                                                            \
-  } while (0)
+void __CUAZAR_RETURN__(int testNum, int expected, int func)
+{
+  if (testModeIsOn == TRUE)
+  {
+    do
+    {
+      if (expected != func)
+      {
+        printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected a return value of " BOLD "%d" RESET RED " but received a return value of " BOLD "%d" RESET RED ".\n" RESET, testNum, expected, func);
+      }
+      else
+      {
+        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%d" RESET GREEN " and got a return value of " BOLD "%d" RESET GREEN ".\n" RESET, testNum, expected, func);
+      }
+    } while (0);
+  }
+}
 
 /************************************************************************************
  * Module: Basic Logic & Arithmetic / Booleans / Integers
- * Macro: __CUAZAR_BOOL__
+ * Function: __CUAZAR_BOOL__
  * Description: Used to compare the expected boolean result with the actual boolean result
  * -----------------------------------------------------------------------------------
  * Example Usage:
@@ -290,35 +284,36 @@ int bumpT(void)
  * Author: Marshall Burns
  * Date: 11/24/2023
  ************************************************************************************/
-#define __CUAZAR_BOOL__(testNum, expectedBool, resultBool)                                                                                                              \
-  do                                                                                                                                                                    \
-  {                                                                                                                                                                     \
-    if ((testModeIsOn == TRUE))                                                                                                                                         \
-    {                                                                                                                                                                   \
-      do                                                                                                                                                                \
-      {                                                                                                                                                                 \
-        if ((expectedBool) != (resultBool))                                                                                                                             \
-        {                                                                                                                                                               \
-          printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected " BOLD "%s" RESET RED " but received " BOLD "%s" RESET RED " as the result.\n" RESET, testNum,     \
-                 (expectedBool == TRUE) ? "TRUE" : "FALSE",                                                                                                             \
-                 (resultBool == TRUE) ? "TRUE" : "FALSE");                                                                                                              \
-        }                                                                                                                                                               \
-        else                                                                                                                                                            \
-        {                                                                                                                                                               \
-          printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%s" RESET GREEN " and got " BOLD "%s" RESET GREEN " as the result.\n" RESET, testNum); \
-        }                                                                                                                                                               \
-      } while (0);                                                                                                                                                      \
-    }                                                                                                                                                                   \
-  } while (0)
 
+void __CUAZAR_BOOL__(int testNum, int expectedBool, int resultBool)
+{
+  if (testModeIsOn == TRUE)
+  {
+    do
+    {
+      if (expectedBool != resultBool)
+      {
+        printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected " BOLD "%s" RESET RED " but received " BOLD "%s" RESET RED " as the result.\n" RESET, testNum,
+               (expectedBool == TRUE) ? "TRUE" : "FALSE",
+               (resultBool == TRUE) ? "TRUE" : "FALSE");
+      }
+      else
+      {
+        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%s" RESET GREEN " and got " BOLD "%s" RESET GREEN " as the result.\n" RESET, testNum,
+               (expectedBool == TRUE) ? "TRUE" : "FALSE",
+               (resultBool == TRUE) ? "TRUE" : "FALSE");
+      }
+    } while (0);
+  }
+}
 /************************************************************************************
  * Module: Execution Time
- * Macro: __CUAZAR_EXEC_TIME__
+ * Function: __CUAZAR_EXEC_TIME__
  * Description: Used to test how long it takes for a function to fully execute.
- * !NOTE:  Before using this macro there are a couple things to note:
- * ! 1. The macro CAN NOT be used inside the function that is being tested.
- * ! 2. This macro only works on functions that do not take in any kind of user input
- * ! 3. The function that is being tested MUST be called inside the macro
+ * !NOTE:  Before using this function there are a couple things to note:
+ * ! 1. The function CAN NOT be used inside the function that is being tested.
+ * ! 2. This function only works on functions that do not take in any kind of user input
+ * ! 3. The function that is being tested MUST be called inside the function
  * ! 4. Uses the C standard library <time.h>
  *------------------------------------------------------------------------------------
  * Example Usage:
@@ -330,20 +325,20 @@ int bumpT(void)
  * Date: 11/25/2023
  ************************************************************************************/
 
-#define __CUAZAR_EXEC_TIME__(testNum, func)                                                                                                      \
-  do                                                                                                                                             \
-  {                                                                                                                                              \
-    if ((testModeIsOn == TRUE))                                                                                                                  \
-    {                                                                                                                                            \
-      do                                                                                                                                         \
-      {                                                                                                                                          \
-        clock_t start = clock();                                                                                                                 \
-        func;                                                                                                                                    \
-        clock_t end = clock();                                                                                                                   \
-        double time_spent = (double)(end - start) / CLOCKS_PER_SEC;                                                                              \
-        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Execution time: " BOLD "%f" RESET GREEN " seconds.\n" RESET, testNum, time_spent); \
-      } while (0);                                                                                                                               \
-    }                                                                                                                                            \
-  } while (0)
+int __CUAZAR_EXEC_TIME__(int testNum, int func)
+{
+  if ((testModeIsOn == TRUE))
+  {
+    do
+    {
+      clock_t start = clock();
+      func;
+      clock_t end = clock();
+      double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+      printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Execution time: " BOLD "%f" RESET GREEN " seconds.\n" RESET, testNum, time_spent);
+    } while (0);
+  }
+  return 0;
+}
 
 #endif
