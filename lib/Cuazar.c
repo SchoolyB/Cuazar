@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include "Cuazar.h"
 
 /************************************************************************************
  * Module(s): Core
  * Function: Init_Cuazar
- * Description: Sets test mode to on.
+ * Description: Sets test mode to on and logs messgaes to terminal and log file.
  * !NOTE: Before using this core function there are a few things to know:
  * !Note: The function must be called BEFORE using any Cuazar tests.
  * !Note: The optional parameter is used to clear the terminal.
@@ -14,19 +15,55 @@
  * Example Usage:
  * int main()
  * {
- *  Init_Cuazar(TRUE); // initialize Cuazar and clear the terminal
+ *  Init_Cuazar(clear()); // initialize Cuazar and clear the terminal
  *  Your code and test here
  * }
  ************************************************************************************/
 int testModeIsOn = FALSE;
 
-int Init_Cuazar(int func) // definition
+int Init_Cuazar(int func)
 {
   testModeIsOn = TRUE;
-  printf(GREEN "Cuazar initialized...\n" RESET);
+  printf(GREEN "Cuazar testing initialized...\n" RESET);
+  openLogFile();
+  FILE *testLogFile = fopen("cuazar-test-history.log", "a");
+  time_t currentTime;
+  time(&currentTime);
+  fprintf(testLogFile, "\nNEW TEST SESSION INITIALIZED @ %s", ctime(&currentTime));
+  fprintf(testLogFile, "======================================================================");
+  fclose(testLogFile);
   return 0;
 }
 
+/************************************************************************************
+ * Module(s): Core
+ * Function: Kill_Cuazar
+ * Description: Sets test mode to off and logs messgaes to terminal and log file.
+ * !Note: Technically this use of this function is OPTIONAL.
+ * -----------------------------------------------------------------------------------
+ * Example Usage:
+ * int main()
+ * {
+ *  Init_Cuazar(clear());;
+ *  Your code and test here
+ *  Kill_Cuazar();
+ * }
+* -----------------------------------------------------------------------------------
+ * Author: Marshall Burns
+ * Date: 12/5/2023
+ ************************************************************************************/
+int Kill_Cuazar(void)
+{
+  testModeIsOn = FALSE;
+  printf(GREEN "Cuazar testing complete!\n" RESET);
+  openLogFile();
+  FILE *testLogFile = fopen("cuazar-test-history.log", "a");
+  time_t currentTime;
+  time(&currentTime);
+  fprintf(testLogFile, "======================================================================");
+  fprintf(testLogFile, "\nALL TESTS COMPLETED @ %s\n\n\n", ctime(&currentTime));
+  return 0;
+}
 /************************************************************************************
  * Module(s): Core
  * Function: clear
@@ -63,6 +100,148 @@ int bumpT(void)
 }
 
 /************************************************************************************
+* Module(s): Core
+* Function: passedT // short for 'passed test'
+* Description: Called inside Cuazar functions to print a message when a test passes
+* -----------------------------------------------------------------------------------
+* Author: Marshall Burns
+* Date: 12/5/2023
+***********************************************************************************/
+void passedT(int testNum)
+{
+  printf(GREEN "TEST " BOLD "#%d" RESET GREEN " PASSED!\n" RESET, testNum);
+}
+
+/************************************************************************************
+ * Module(s): Core
+ * Function: failedT // short for 'failed test'
+ * Description: Called inside Cuazar functions to print a message when a test fails
+ *------------------------------------------------------------------------------------
+ * Author: Marshall Burns
+ * Date: 12/5/2023
+ ************************************************************************************/
+void failedT(int testNum)
+{
+  printf(RED "TEST " BOLD "#%d" RESET RED " FAILED.\n" RESET, testNum);
+}
+
+/************************************************************************************
+ * Module(s): Core
+ * Function: openLogFile
+ * Description: Called inside Cuazar functions to open the log file
+ * -----------------------------------------------------------------------------------
+ *  Author: Marshall Burns
+ *  Date: 12/5/2023
+ ************************************************************************************/
+int openLogFile(void)
+{
+  FILE *testLogFile = fopen("cuazar-test-history.log", "a");
+  if (testLogFile == NULL)
+  {
+    perror("Error opening test log file");
+    return 1;
+  }
+  fclose(testLogFile);
+}
+
+/************************************************************************************
+ * Module(s): Core
+ * Function: logT // short for 'log test'
+ * Description: Called inside Cuazar functions to log test status' to a file
+ * !Note: Takes in an unlimited amount of arguments
+ * -----------------------------------------------------------------------------------
+ *  Author: Marshall Burns
+ *  Date: 12/5/2023
+ ************************************************************************************/
+int logT(int testNum, ...)
+{
+  openLogFile();
+  FILE *testLogFile = fopen("cuazar-test-history.log", "a");
+  time_t currentTime;
+  time(&currentTime);
+  fprintf(testLogFile, "\n");
+  fprintf(testLogFile, "\nLogged @ %s", ctime(&currentTime));
+
+  va_list args;            // initialize variable argument list
+  va_start(args, testNum); // start variable argument list from testNum
+
+ 
+  int expectedInt = va_arg(args, int);
+  int resultInt = va_arg(args, int);
+
+  /*For __CUAZAR_EQUALS_STR__*/
+  char *expectedStr = va_arg(args, char *);
+  char *resultStr = va_arg(args, char *);
+
+  /*For __CUAZAR_EQUALS_PTR__*/
+  int *expectedPtr = va_arg(args, int *);
+  int *resultPtr = va_arg(args, int *);
+
+  /*For __CUAZAR_RETURN__*/
+  int expectedRet = va_arg(args, int);
+  int func = va_arg(args, int);
+
+  /*For __CUAZAR_BOOL__*/
+  int expectedBool = va_arg(args, int);
+  int resultBool = va_arg(args, int);
+
+  va_end(args); // end variable argument list after args
+
+  if (expectedInt != resultInt)
+  {
+
+    fprintf(testLogFile, "TEST #%d FAILED. Expected %d but instead received %d.\n", testNum, expectedInt, resultInt);
+    fclose(testLogFile);
+  }
+  else if (expectedInt == resultInt)
+  {
+    fprintf(testLogFile, "TEST #%d PASSED! Expected %d and got %d as the result.\n", testNum, expectedInt, resultInt);
+    fclose(testLogFile);
+  }
+
+  else if (expectedStr != resultStr)
+  {
+    fprintf(testLogFile, "TEST #%d FAILED. Expected a string of %s but instead received %s.\n", testNum, expectedStr, resultStr);
+    fclose(testLogFile);
+  }
+  else if (expectedStr == resultStr)
+  {
+    fprintf(testLogFile, "TEST #%d PASSED! Expected a string of %s and got %s as the result.\n", testNum, expectedStr, resultStr);
+    fclose(testLogFile);
+  }
+
+  else if (expectedPtr != resultPtr)
+  {
+    fprintf(testLogFile, "TEST #%d FAILED. Expected to point to %p but instead is pointing to %p.\n", testNum, expectedPtr, resultPtr);
+    fclose(testLogFile);
+  }
+  else if (expectedPtr == resultPtr)
+  {
+    fprintf(testLogFile, "TEST #%d PASSED! Expected to point to %p and got %p.\n", testNum, expectedPtr, resultPtr);
+    fclose(testLogFile);
+  }
+  else if (expectedRet != func)
+  {
+    fprintf(testLogFile, "TEST #%d FAILED. Expected a return value of %d but received a return value of %d.\n", testNum, expectedRet, func);
+    fclose(testLogFile);
+  }
+  else if (expectedRet == func)
+  {
+    fprintf(testLogFile, "TEST #%d PASSED! Expected a return value of %d and got %d.\n", testNum, expectedRet, func);
+    fclose(testLogFile);
+  }
+  else if (expectedBool != resultBool)
+  {
+    fprintf(testLogFile, "TEST #%d FAILED. Expected %d and got %d as the result.\n", testNum, expectedBool, resultBool);
+    fclose(testLogFile);
+  }
+  else if (expectedBool == resultBool)
+  {
+    fprintf(testLogFile, "TEST #%d PASSED! Expected %d and got %d as the result.\n", testNum, expectedBool, resultBool);
+    fclose(testLogFile);
+  }
+}
+/************************************************************************************
  * Module(s): Basic Logic & Arithmetic / Integers
  * Function: __CUAZAR_EQUALS__
  * Description: Used to compare the expected result with the actual result
@@ -85,11 +264,13 @@ void __CUAZAR_EQUALS_INT__(int testNum, int expectedInt, int resultInt)
     {
       if (expectedInt != resultInt)
       {
-        printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected " BOLD "%d" RESET RED " but received " BOLD "%d" RESET RED " as the result.\n" RESET, testNum, expectedInt, resultInt);
+        failedT(testNum);
+        logT(testNum, expectedInt, resultInt);
       }
       else
       {
-        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%d" RESET GREEN " and got " BOLD "%d" RESET GREEN " as the result.\n" RESET, testNum, expectedInt, resultInt);
+        passedT(testNum);
+        logT(testNum, expectedInt, resultInt);
       }
     } while (0);
   }
@@ -117,11 +298,13 @@ void __CUAZAR_EQUALS_STR__(int testNum, char *expectedStr, char *resultStr)
     {
       if (strcmp(expectedStr, resultStr) != 0)
       {
-        printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected " BOLD "%s" RESET RED " but received " BOLD "%s" RESET RED " as the result.\n" RESET, testNum, expectedStr, resultStr);
+        failedT(testNum);
+        logT(testNum, expectedStr, resultStr);
       }
       else
       {
-        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%s" RESET GREEN " and got " BOLD "%s" RESET GREEN " as the result.\n" RESET, testNum, expectedStr, resultStr);
+        passedT(testNum);
+        logT(testNum, expectedStr, resultStr);
       }
     } while (0);
   }
@@ -151,11 +334,13 @@ int __CUAZAR_EQUALS_PTR__(int testNum, int *expectedPtr, int *resultPtr)
     {
       if (expectedPtr != resultPtr)
       {
-        printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected to point to " BOLD "%p" RESET RED " but instead is pointing to " BOLD "%p" RESET RED ".\n" RESET, testNum, expectedPtr, resultPtr);
+        logT(testNum, expectedPtr, resultPtr);
+        failedT(testNum);
       }
       else
       {
-        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected to point to " BOLD "%p" RESET GREEN " and got " BOLD "%p" RESET GREEN " as the result.\n" RESET, testNum, expectedPtr, resultPtr);
+        logT(testNum, expectedPtr, resultPtr);
+        passedT(testNum);
       }
     } while (0);
   }
@@ -177,7 +362,7 @@ int __CUAZAR_EQUALS_PTR__(int testNum, int *expectedPtr, int *resultPtr)
  * Author: Marshall Burns
  * Date: 11/24/2023
  * **********************************************************************************/
-void __CUAZAR_RETURN__(int testNum, int expectedRet, int func)
+int __CUAZAR_RETURN__(int testNum, int expectedRet, int func)
 {
   if (testModeIsOn == TRUE)
   {
@@ -185,11 +370,13 @@ void __CUAZAR_RETURN__(int testNum, int expectedRet, int func)
     {
       if (expectedRet != func)
       {
-        printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected a return value of " BOLD "%d" RESET RED " but received a return value of " BOLD "%d" RESET RED ".\n" RESET, testNum, expectedRet, func);
+        logT(testNum, expectedRet, func);
+        failedT(testNum);
       }
       else
       {
-        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%d" RESET GREEN " and got a return value of " BOLD "%d" RESET GREEN ".\n" RESET, testNum, expectedRet, func);
+        logT(testNum, expectedRet, func);
+        passedT(testNum);
       }
     } while (0);
   }
@@ -219,15 +406,13 @@ void __CUAZAR_BOOL__(int testNum, int expectedBool, int resultBool)
     {
       if (expectedBool != resultBool)
       {
-        printf(RED "TEST " BOLD "#%d " RESET RED "FAILED. Expected " BOLD "%s" RESET RED " but received " BOLD "%s" RESET RED " as the result.\n" RESET, testNum,
-               (expectedBool == TRUE) ? "TRUE" : "FALSE",
-               (resultBool == TRUE) ? "TRUE" : "FALSE");
+        failedT(testNum);
+        logT(testNum, expectedBool, resultBool);
       }
       else
       {
-        printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Expected " BOLD "%s" RESET GREEN " and got " BOLD "%s" RESET GREEN " as the result.\n" RESET, testNum,
-               (expectedBool == TRUE) ? "TRUE" : "FALSE",
-               (resultBool == TRUE) ? "TRUE" : "FALSE");
+        passedT(testNum);
+        logT(testNum, expectedBool, resultBool);
       }
     } while (0);
   }
@@ -261,7 +446,14 @@ int __CUAZAR_EXEC_TIME__(int testNum, int func)
       func;
       clock_t end = clock();
       double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-      printf(GREEN "TEST " BOLD "#%d " RESET GREEN "PASSED! Execution time: " BOLD "%f" RESET GREEN " seconds.\n" RESET, testNum, time_spent);
+      printf(GREEN "TEST " BOLD "#%d " RESET GREEN "FINISHED! Execution time: " BOLD "%f" RESET GREEN " seconds.\n" RESET, testNum, time_spent);
+      openLogFile();
+      FILE *testLogFile = fopen("cuazar-test-history.log", "a");
+      time_t currentTime;
+      time(&currentTime);
+      fprintf(testLogFile, "\nLogged @ %s", ctime(&currentTime));
+      fprintf(testLogFile, "TEST #%d FINISHED! Executed in: %f seconds.", testNum, time_spent);
+      fclose(testLogFile);
     } while (0);
   }
   return 0;
