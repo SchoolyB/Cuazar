@@ -70,15 +70,19 @@
 #undef FALSE
 #endif
 #define FALSE 0
-
 // Declarations
 int Init_Cuazar(int clear);
+int Kill_Cuazar(void);
 int bumpT(void);
 int clear(void);
+int passedT(int testNum);
+void failedT(int testNum);
+int openLogFile(void);
+int logT(int testNum, ...);
 void __CUAZAR_EQUALS_INT__(int testNum, int expectedInt, int resultInt);
 void __CUAZAR_EQUALS_STR__(int testNum, char *expectedStr, char *resultStr);
 int __CUAZAR_EQUALS_PTR__(int testNum, int *expectedPtr, int *resultPtr);
-void __CUAZAR_RETURN__(int testNum, int expectedRet, int func);
+int __CUAZAR_RETURN__(int testNum, int expectedRet, int func);
 void __CUAZAR_BOOL__(int testNum, int expectedBool, int resultBool);
 int __CUAZAR_EXEC_TIME__(int testNum, int func);
 
