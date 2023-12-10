@@ -48,7 +48,7 @@ int Init_Cuazar(int func)
  *  Your code and test here
  *  Kill_Cuazar();
  * }
-* -----------------------------------------------------------------------------------
+ * -----------------------------------------------------------------------------------
  * Author: Marshall Burns
  * Date: 12/5/2023
  ************************************************************************************/
@@ -100,13 +100,13 @@ int bumpT(void)
 }
 
 /************************************************************************************
-* Module(s): Core
-* Function: passedT // short for 'passed test'
-* Description: Called inside Cuazar functions to print a message when a test passes
-* -----------------------------------------------------------------------------------
-* Author: Marshall Burns
-* Date: 12/5/2023
-***********************************************************************************/
+ * Module(s): Core
+ * Function: passedT // short for 'passed test'
+ * Description: Called inside Cuazar functions to print a message when a test passes
+ * -----------------------------------------------------------------------------------
+ * Author: Marshall Burns
+ * Date: 12/5/2023
+ ***********************************************************************************/
 void passedT(int testNum)
 {
   printf(GREEN "TEST " BOLD "#%d" RESET GREEN " PASSED!\n" RESET, testNum);
@@ -165,7 +165,6 @@ int logT(int testNum, ...)
   va_list args;            // initialize variable argument list
   va_start(args, testNum); // start variable argument list from testNum
 
- 
   int expectedInt = va_arg(args, int);
   int resultInt = va_arg(args, int);
 

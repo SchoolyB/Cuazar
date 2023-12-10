@@ -71,11 +71,11 @@
 #endif
 #define FALSE 0
 // Declarations
-int Init_Cuazar(int clear);
+int Init_Cuazar(int func);
 int Kill_Cuazar(void);
 int bumpT(void);
 int clear(void);
-int passedT(int testNum);
+void passedT(int testNum);
 void failedT(int testNum);
 int openLogFile(void);
 int logT(int testNum, ...);
